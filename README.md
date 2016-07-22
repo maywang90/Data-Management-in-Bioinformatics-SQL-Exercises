@@ -1,1 +1,1 @@
-# Data-Management-in-Bioinformatics-SQL-Exercises
+# It is about microarray gene expression data
