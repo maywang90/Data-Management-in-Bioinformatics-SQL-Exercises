@@ -1,0 +1,39 @@
+Question 1 Find the names of experiments performed by Prof. Pain after Jan 1, 2004.
+
+SELECT name
+FROM experiments
+WHERE whoperformed= 'Prof.Pain' and date > '2014-01-01' ;
+
+Question 2 Find the names of genes that were either positively expressed twofold or more with a significance of at least 1.0, 
+in some experiment, or negatively expressed twofold or less with a significance of at least 1.0, in some experiment. 
+List them alongside their organisms in a two-column format.
+
+SELECT Genes.gid, organism, level, significance
+FROM Genes, Expression
+WHERE Genes.gid=Expression.gid
+and significance >= 1.0
+and (level>=2 or level<=2);
+
+Question 3 What is the grandparent category of 'glycine binding'?
+
+SELECT parent_category
+FROM GOTree
+WHERE category= (SELECT parent_category where category = 'glycine binding');
+
+Question 4 Find the names of experiments that were performed before some Gasch experiment.
+
+SELECT name
+FROM experiments
+WHERE date < (SELECT Max(date) FROM experiment WHERE whoperformed = 'Gasch');
+
+Question 5 Find the names of pine genes that were positively expressed more than 0.5-fold (with a significance of 1.0 or more) 
+in at least two experiments.
+
+SELECT DISTINCT g.name
+FROM Genes g JOIN Experiments e
+ON g.gid = e.gid 
+WHERE g.organism = 'pine' and e.signigicance >= 1.0 and e.level > 0.5
+Group by g.gid
+HAVING COUNT(*) > 2;
+
+
